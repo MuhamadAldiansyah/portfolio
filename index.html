@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar</title>
+    <script src="assets/tailwind/tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="assets/aos/aos.css">
+
+
+    <style>
+        .glow-hover {
+            color: white; /* White text color */
+            text-shadow: 0 0 4px rgba(56, 189, 248, 0.3); /* Initial light glow with reduced opacity */
+            transition: background-color 0.3s, color 0.3s, text-shadow 0.3s;
+        }
+        .glow-hover:hover {
+            background-color: rgba(39, 189, 254, 0.2); /* Light blue background with opacity */
+            box-shadow: 0 0 6px rgba(56, 189, 248, 0.6), 0 0 12px rgba(56, 189, 248, 0.6); /* Blue glow */
+            color: white; /* White text color on hover */
+        }
+        .glow-text {
+            color: #00bcd4; /* Cyan color for the glow effect */
+            text-shadow: 0 0 8px rgba(0, 188, 212, 0.8), 0 0 16px rgba(0, 188, 212, 0.6);
+        }
+        .glow-button {
+            background: linear-gradient(145deg, #ffffff, #00bcd4); /* Gradient from darker to lighter cyan */
+            color: white; /* White text color */
+            border: 2px solid transparent; /* Transparent border */
+            border-radius: 8px; /* Rounded corners */
+            text-shadow: 0 0 6px rgba(0, 188, 212, 0.8); /* Glowing text effect */
+            transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+            position: relative; /* Required for the pseudo-element */
+        }
+    
+        .glow-button::before {
+            content: ''; /* Empty content for pseudo-element */
+            position: absolute; /* Absolute positioning for the glow */
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit; /* Inherit the border-radius from the button */
+            background: rgba(0, 188, 212, 0.5); /* Semi-transparent cyan */
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.6), 0 0 12px rgba(0, 188, 212, 0.4); /* Glow effect */
+            z-index: -1; /* Place behind the button */
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+    
+        .glow-button:hover {
+            background: linear-gradient(145deg, #63fefe, #00bcd4); /* Keep gradient background */
+            color: white; /* White text color on hover */
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.8), 0 0 16px rgba(0, 188, 212, 0.6); /* More intense glow */
+        }
+        .background-image {
+            background-image: url('img/frame.png'); /* Replace with your image URL */
+            background-size: cover; /* Cover the entire section */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent repeating */
+        }
+        .transparent-navbar {
+            background-color: rgba(31, 41, 55, 0.3); /* Semi-transparent background color */
+            backdrop-filter: blur(5px); /* Optional: Add a blur effect */
+        }
+        .transparent-dropdown {
+            background-color: rgba(31, 41, 55, 0.8); /* Semi-transparent background color for dropdown */
+            backdrop-filter: blur(5px); /* Optional: Add a blur effect to the dropdown */
+        }
+        
+        .skill-card:hover {
+            background-color: rgba(39, 189, 254, 0.2); /* Light blue background with opacity */
+            box-shadow: 0 0 6px rgba(56, 189, 248, 0.6), 0 0 12px rgba(56, 189, 248, 0.6); /* Blue glow */
+            color: white; /* White text color on hover */
+        }
+        
+        .skill-card {
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .skill-card img {
+            transition: transform 0.3s;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+<!-- Navbar -->
+<nav class="transparent-navbar p-4 fixed top-0 left-0 w-full z-10">
+    <div class="container mx-auto flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="text-2xl font-semibold glow-text text-white">Muhamad Aldiansyah</a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-4">
+            <a href="#home" class="glow-hover p-2 rounded">Home</a>
+            <a href="#about" class="glow-hover p-2 rounded">About</a>
+            <a href="#Skill" class="glow-hover p-2 rounded">Skill</a>
+            <a href="#portfolio" class="glow-hover p-2 rounded">Portfolio</a>
+            <a href="#contact" class="glow-hover p-2 rounded">Contact</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden absolute top-16 left-1/2 transform -translate-x-1/2 w-full p-4 hidden transparent-dropdown">
+        <div class="flex flex-col items-center">
+            <a href="#home" class="glow-hover block py-2 px-4 rounded w-full text-center">Home</a>
+            <a href="#about" class="glow-hover block py-2 px-4 rounded w-full text-center">About</a>
+            <a href="#Skill" class="glow-hover block py-2 px-4 rounded w-full text-center">Skill</a>
+            <a href="#portfolio" class="glow-hover block py-2 px-4 rounded w-full text-center">Portfolio</a>
+            <a href="#contact" class="glow-hover block py-2 px-4 rounded w-full text-center">Contact</a>
+        </div>
+    </div>
+
+</nav>
+
+<!-- Main Content -->
+<section id="home" class="background-image min-h-screen flex flex-col items-center justify-center text-center py-16" data-aos="fade-up" data-aos-delay="200">
+    <h1 class="text-5xl md:text-6xl font-bold glow-text mb-4 text-white" data-aos="fade-up" data-aos-delay="200">Welcome to My Portfolio</h1>
+    <p class="text-lg md:text-xl mb-8 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+        Explore my work and projects showcasing my skills and creativity in web design and development. From innovative web applications to stunning visual designs, discover how I bring ideas to life through technology.
+    </p>
+    <a href="#about" class="glow-button py-3 px-6 rounded-lg text-lg font-semibold">See My Work</a>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section min-h-screen flex flex-col items-center justify-center text-center py-16 bg-gray-900" data-aos="fade-up" data-aos-delay="200">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 glow-text">About Me</h2>
+        <p class="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed">
+           Hello I am Muhamad Aldiansyah and I am dedicated professional specializing in web development, web design, and UI/UX design. With a keen eye for detail and a commitment to excellence, I strive to create visually appealing, user-friendly, and efficient digital experiences.
+        </p>
+        <div class="flex flex-col md:flex-row gap-6 md:gap-8 justify-center items-center">
+            <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg max-w-xs flex flex-col items-center text-center transition-transform transform hover:scale-105 glow-hover h-[400px] flex-grow" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-4xl mb-2">
+                    <i class="fas fa-code glow-text"></i> <!-- Font Awesome icon for Web Development -->
+                </div>
+                <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 glow-text">Web Developer</h3>
+                <p class="text-gray-400 text-sm md:text-base">
+                    As a Web Developer, I focus on building responsive, high-performance websites using the latest technologies. My goal is to develop scalable solutions that enhance user engagement and streamline operations.
+                </p>
+            </div>
+            <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg max-w-xs flex flex-col items-center text-center transition-transform transform hover:scale-105 glow-hover h-[400px] flex-grow" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-4xl mb-2">
+                    <i class="fas fa-paint-brush glow-text"></i> <!-- Font Awesome icon for Web Design -->
+                </div>
+                <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 glow-text">Web Designer</h3>
+                <p class="text-gray-400 text-sm md:text-base">
+                    My role as a Web Designer involves crafting visually stunning and intuitive interfaces. I bring creativity and innovation to every project, ensuring the design aligns with the client's vision and brand identity.
+                </p>
+            </div>
+            <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg max-w-xs flex flex-col items-center text-center transition-transform transform hover:scale-105 glow-hover h-[400px] flex-grow" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-4xl mb-2">
+                    <i class="fas fa-laptop-code glow-text"></i> <!-- Font Awesome icon for UI/UX Design -->
+                </div>
+                <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 glow-text">UI/UX Designer</h3>
+                <p class="text-gray-400 text-sm md:text-base">
+                    As a UI/UX Designer, I specialize in creating seamless and engaging user experiences. I prioritize user needs and behaviors to design interfaces that are not only functional but also aesthetically pleasing.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="Skill" class="min-h-screen flex flex-col items-center justify-center text-center bg-gray-900 py-16" data-aos="fade-up" data-aos-delay="200">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white">My Skills</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Individual Skill Card -->
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Python</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">JavaScript</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/PHP-logo.svg" alt="PHP" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">PHP</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/tailwind.png" alt="Tailwind CSS" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Tailwind CSS</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg" alt="Bootstrap" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Bootstrap</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/CSS3_logo.svg" alt="CSS" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">CSS</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">HTML</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" alt="Figma" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Figma</h3>
+            </div>
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/download (2).png" alt="Laravel" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4">
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Laravel</h3>
+            </div>            
+            <div class="skill-card bg-gray-800 p-4 sm:p-6 rounded-lg text-center transition-transform transform hover:scale-105 glow-hover flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <i class="fab fa-github text-4xl sm:text-5xl text-white mb-2 sm:mb-4"></i> <!-- Font Awesome GitHub icon -->
+                <h3 class="text-lg sm:text-xl font-semibold text-white">Git Hub</h3>
+            </div>            
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="min-h-screen flex flex-col items-center justify-center text-center bg-gray-900 py-16" data-aos="fade-up" data-aos-delay="200">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-white">My Portfolio</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- Portfolio Item -->
+            <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/portfolio (2).png" alt="Project 1" class="w-full h-[200px] object-cover transition-transform duration-300 group-hover:scale-110">
+                <!-- Overlay for details -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <a href="https://medium.com/@maldyansyah29/ui-ux-brief-challenge-pt-fath-technology-solution-wa-blast-f76ff9b1f9fe" class="text-white text-3xl">
+                        <i class="fas fa-eye"></i> <!-- Font Awesome eye icon for view details -->
+                    </a>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/portfolio (1).png" alt="Project 1" class="w-full h-[200px] object-cover transition-transform duration-300 group-hover:scale-110">
+                <!-- Overlay for details -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <a href="https://medium.com/@maldyansyah29/ui-ux-brief-challenge-pt-ma-aplikasi-e-commerce-0b3ee921846d" class="text-white text-3xl">
+                        <i class="fas fa-eye"></i> <!-- Font Awesome eye icon for view details -->
+                    </a>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/Frame 6.png" alt="Project 1" class="w-full h-[200px] object-cover transition-transform duration-300 group-hover:scale-110">
+                <!-- Overlay for details -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <a href="https://muhamadaldiansyah.github.io/WarungEmirutama/" class="text-white text-3xl">
+                        <i class="fas fa-eye"></i> <!-- Font Awesome eye icon for view details -->
+                    </a>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                <img src="img/a.png" alt="Project 1" class="w-full h-[200px] object-cover transition-transform duration-300 group-hover:scale-110">
+                <!-- Overlay for details -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <a href="https://muhamadaldiansyah.github.io/TodoList/" class="text-white text-3xl">
+                        <i class="fas fa-eye"></i> <!-- Font Awesome eye icon for view details -->
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="min-h-screen flex flex-col items-center justify-center bg-gray-900 py-16" data-aos="fade-up" data-aos-delay="200">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-white text-center" data-aos="fade-up" data-aos-delay="200">Contact Me</h2>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+            <!-- Contact Information -->
+            <div class="w-full md:w-1/2 flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl md:text-2xl font-semibold text-white mb-4">Get in Touch</h3>
+                <p class="text-gray-400 mb-6">Feel free to reach out to me via email or connect with me on social media. I look forward to hearing from you!</p>
+                <div class="flex flex-col gap-4 w-full max-w-md">
+                    <!-- Email -->
+                    <div class="flex items-center bg-gray-800 p-4 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-envelope text-white text-2xl mr-4"></i>
+                        <a href="mailto:your.email@example.com" class="text-white">maldyansyah29@gmail.com</a>
+                    </div>
+                    <!-- Phone -->
+                    <div class="flex items-center bg-gray-800 p-4 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-phone text-white text-2xl mr-4"></i>
+                        <a href="tel:+1234567890" class="text-white">0878 2242 1207</a>
+                    </div>
+                    <!-- Address -->
+                    <div class="flex items-center bg-gray-800 p-4 rounded-lg shadow-md" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-map-marker-alt text-white text-2xl mr-4"></i>
+                        <span class="text-white">Cempaka Arum, Cirebon, country</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Contact Form -->
+            <div class="w-full md:w-1/2">
+                <h3 class="text-xl md:text-2xl font-semibold text-white mb-4">Send a Message</h3>
+                <form action="#" method="POST" class="bg-gray-800 p-8 rounded-lg shadow-md">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" required data-aos="fade-up" data-aos-delay="200">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" required data-aos="fade-up" data-aos-delay="200">
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-gray-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" required data-aos="fade-up" data-aos-delay="200"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 p-4 text-center">
+    <p class="text-gray-400">&copy; 2024 Your Company. All rights reserved.</p>
+</footer>
+
+<script>
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+</script>
+    <!-- AOS Initialization -->
+    <script src="assets/aos/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+        });
+    </script>
+</body>
+</html>
